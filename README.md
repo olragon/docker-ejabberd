@@ -1,8 +1,12 @@
 # docker-ejabberd
 
-[Ejabberd][ejabberd] server version 13.12 with internal and anonymous auth enabled and no SSL. To control the XMPP server, register an admin user 'admin@localhost' with your prefered XMPP client.
+[Ejabberd][ejabberd] server version 13.12. 
 
-Clone this repo and modify the ejabberd.yml file for your needs and build.
+This build has SSL, LDAP, and ODBC enabled.
+
+`/etc/ejabberd` is exposed as a volume, so you can mount your config + keys in as a volume.
+
+`/var/lib/ejabberd` and `/var/log/ejabberd` are also both exposed as volumes.
 
 [ejabberd]: http://ejabberd.im
 
@@ -17,13 +21,13 @@ $ docker build -t <repo name> .
 ### Run in foreground
 
 ```
-$ docker run -t -i -p 5222 -p 5269 -p 5280 rroemhild/ejabberd
+$ docker run -p 5222 -p 5269 -p 5280 jprjr/ejabberd
 ```
 
 ### Run in background
 
 ```
-$ docker run -d -i -p 5222:5222 -p 5269:5269 -p 5280:5280 rroemhild/ejabberd
+$ docker run -d -p 5222:5222 -p 5269:5269 -p 5280:5280 jprjr/ejabberd
 ```
 
 ## Versions
@@ -36,3 +40,9 @@ $ docker run -d -i -p 5222:5222 -p 5269:5269 -p 5280:5280 rroemhild/ejabberd
 * 5222
 * 5269
 * 5280
+
+## Exposed volumes
+
+* `/etc/ejabberd`
+* `/var/lib/ejabberd`
+* `/var/log/ejabberd`
