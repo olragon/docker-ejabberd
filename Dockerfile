@@ -8,8 +8,7 @@ MAINTAINER John Regan <john@jrjrtech.com>
 # enable universe repo
 RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
 
-RUN apt-get update
-RUN apt-get -y dist-upgrade 
+RUN apt-get update && apt-get -y dist-upgrade 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install curl build-essential m4 git libncurses5-dev libssh-dev libyaml-dev libexpat-dev libssl-dev libldap2-dev unixodbc-dev odbc-postgresql libmyodbc tdsodbc 
 
 # user & group
