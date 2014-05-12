@@ -1,20 +1,19 @@
 # Ejabberd 13.12
-
-FROM ubuntu:precise
+FROM stackbrew/ubuntu:12.04
 
 # ORIGINAL MAINTAINER Rafael Römhild <rafael@roemhild.de>
 MAINTAINER John Regan <john@jrjrtech.com>
 
 # enable universe repo
-RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list
+RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt/sources.list \
+&&  echo "deb http://archive.ubuntu.com/ubuntu/ precise-security main universe" >> /etc/apt/sources.list \
+&&  echo "deb http://archive.ubuntu.com/ubuntu/ precise-updates main universe" >> /etc/apt/sources.list \
+&& apt-get update
 
-RUN apt-get update
-RUN apt-get -y dist-upgrade 
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install curl build-essential m4 git libncurses5-dev libssh-dev libyaml-dev libexpat-dev libssl-dev libldap2-dev unixodbc-dev odbc-postgresql libmyodbc tdsodbc 
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install curl build-essential m4 git libncurses5-dev libssh-dev libyaml-dev libexpat-dev libssl-dev libldap2-dev unixodbc-dev odbc-postgresql libmyodbc tdsodbc
 
 # user & group
-RUN addgroup ejabberd
-RUN adduser --system --ingroup ejabberd --home /opt/ejabberd --disabled-login ejabberd
+RUN addgroup ejabberd && adduser --system --ingroup ejabberd --home /opt/ejabberd --disabled-login ejabberd
 
 # erlang
 RUN mkdir -p /src/erlang \
@@ -24,7 +23,8 @@ RUN mkdir -p /src/erlang \
 && cd otp_src_R16B03-1 \
 && ./configure \
 && make \
-&& make install
+&& make install \
+&& cd / && rm -rf /src/erlang
 
 # ejabberd
 RUN mkdir -p /src/ejabberd \
@@ -34,10 +34,11 @@ RUN mkdir -p /src/ejabberd \
 && cd ejabberd-13.12 \
 && ./configure --enable-user=ejabberd --enable-nif --enable-odbc --enable-mysql --enable-pgsql --enable-json --enable-http \
 && make \
-&& make install
+&& make install \
+&& cd / && rm -rf /src/ejabberd
+
 
 # cleanup
-RUN cd / && rm -rf /src
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y remove git libncurses5-dev libssh-dev libyaml-dev libexpat-dev libssl-dev libldap2-dev unixodbc-dev
 
 # This is so hacky - ejabberdctl has "start" and "live" commands
