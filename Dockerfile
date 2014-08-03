@@ -60,6 +60,9 @@ RUN touch /var/log/ejabberd/dummy && chown -R ejabberd:ejabberd /var/log/ejabber
 RUN touch /var/lib/ejabberd/dummy && chown -R ejabberd:ejabberd /var/lib/ejabberd
 RUN touch /etc/ejabberd/dummy && chown -R ejabberd:ejabberd /etc/ejabberd
 
+# set 123456 as default password for admin@localhost
+RUN ejabberdctl admin localhost 123456
+
 USER ejabberd
 VOLUME ["/etc/ejabberd"]
 VOLUME ["/var/log/ejabberd"]
