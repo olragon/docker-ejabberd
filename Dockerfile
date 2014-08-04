@@ -10,7 +10,7 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt
 &&  echo "deb http://archive.ubuntu.com/ubuntu/ precise-updates main universe" >> /etc/apt/sources.list \
 && apt-get update
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install curl build-essential m4 git libncurses5-dev libssh-dev libyaml-dev libexpat-dev libssl-dev libldap2-dev unixodbc-dev odbc-postgresql libmyodbc tdsodbc
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install curl build-essential m4 git libncurses5-dev libssh-dev libyaml-dev libexpat-dev libssl-dev libldap2-dev unixodbc-dev odbc-postgresql libmyodbc tdsodbc python-requests
 
 # user & group
 RUN addgroup ejabberd && adduser --system --ingroup ejabberd --home /opt/ejabberd --disabled-login ejabberd
@@ -59,9 +59,6 @@ ADD ./ejabberdctl.cfg /etc/ejabberd/
 RUN touch /var/log/ejabberd/dummy && chown -R ejabberd:ejabberd /var/log/ejabberd
 RUN touch /var/lib/ejabberd/dummy && chown -R ejabberd:ejabberd /var/lib/ejabberd
 RUN touch /etc/ejabberd/dummy && chown -R ejabberd:ejabberd /etc/ejabberd
-
-# set 123456 as default password for admin@localhost
-RUN ejabberdctl admin localhost 123456
 
 USER ejabberd
 VOLUME ["/etc/ejabberd"]
