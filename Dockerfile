@@ -10,7 +10,7 @@ RUN echo "deb http://archive.ubuntu.com/ubuntu precise main universe" > /etc/apt
 &&  echo "deb http://archive.ubuntu.com/ubuntu/ precise-updates main universe" >> /etc/apt/sources.list \
 && apt-get update
 
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install curl build-essential m4 git libncurses5-dev libssh-dev libyaml-dev libexpat-dev libssl-dev libldap2-dev unixodbc-dev odbc-postgresql libmyodbc tdsodbc python-requests
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install curl build-essential m4 git libncurses5-dev libssh-dev libyaml-dev libexpat-dev libssl-dev libldap2-dev unixodbc-dev odbc-postgresql libmyodbc tdsodbc python-requests
 
 # user & group
 RUN addgroup ejabberd && adduser --system --ingroup ejabberd --home /opt/ejabberd --disabled-login ejabberd
